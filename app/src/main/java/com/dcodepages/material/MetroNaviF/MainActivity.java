@@ -1,16 +1,23 @@
 package com.dcodepages.material.MetroNaviF;
 
+import android.content.Context;
+import android.graphics.Canvas;
+import android.graphics.Color;
+import android.graphics.Paint;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarActivity;
 import android.support.v7.widget.Toolbar;
+import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MotionEvent;
 import android.view.View;
 import android.widget.TextView;
 import android.widget.Toast;
+
+
 
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
@@ -24,7 +31,7 @@ import java.util.Timer;
 import java.util.TimerTask;
 
 /**
- * Created by d-codepages on 11/11/2014.
+ * Created by maxxl2012 on 11/11/2015.
  */
 public class MainActivity extends ActionBarActivity implements DrawerCallbacks {
 
@@ -1693,6 +1700,8 @@ for(int i=0;i<1700;i++)
         if (day == 1 || day == 7) return false;
         else return true;
     }
+
+        //ТУТ НУЖНО ИСКАТЬ
     int Search(int noowtime,String Napr)
     {
         int res=0;
@@ -1714,13 +1723,32 @@ for(int i=0;i<1700;i++) {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
+            super.onCreate(savedInstanceState);
+
+            DisplayMetrics dm = getApplicationContext().getResources().getDisplayMetrics();
+            int densityDpi = dm.densityDpi;
+            int width = dm.widthPixels;
+            int height = dm.heightPixels;
+            ScreenMetr metrics=ScreenMetr.getInstance();
+            metrics.initDisplay(densityDpi, width, height);
+
+            //drawView=new DrawView(MyCont);
+
+            setContentView(R.layout.activity_main);
+
+            //View v = (View)findViewById(R.id.DrawV);
+
         mToolbar = (Toolbar) findViewById(R.id.toolbar_actionbar);
         setSupportActionBar(mToolbar);
         getSupportActionBar().setDisplayShowHomeEnabled(true);
         NaprFirst="KomVok";NaprTwo="NULL";
 
+
+
+            
+                
+            
+            
         mToolbar.setOnTouchListener(new View.OnTouchListener() {
             @Override
             public boolean onTouch(View v, MotionEvent event) {
@@ -1822,6 +1850,7 @@ for(int i=0;i<1700;i++) {
 
 
     }
+
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {

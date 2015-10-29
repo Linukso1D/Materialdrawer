@@ -2,6 +2,7 @@ package com.dcodepages.material.MetroNaviF;
 
 import android.app.Activity;
 import android.app.Fragment;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
@@ -11,6 +12,9 @@ import android.support.v7.widget.Toolbar;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
+
+
 
 import java.util.ArrayList;
 import java.util.List;
@@ -106,13 +110,14 @@ public class Nav_DrawerFragment extends Fragment implements DrawerCallbacks {
 
     public List<NavigationItem> getMenu() {
         List<NavigationItem> items = new ArrayList<NavigationItem>();
-        items.add(new NavigationItem("Коммунаровская ", getResources().getDrawable(R.drawable.abc_btn_radio_material_brown)));
-        items.add(new NavigationItem("Проспект-свободы ", getResources().getDrawable(R.drawable.abc_btn_radio_material_green)));
-        items.add(new NavigationItem("Заводская ", getResources().getDrawable(R.drawable.abc_btn_radio_material_blue)));
-        items.add(new NavigationItem("Металурговская ", getResources().getDrawable(R.drawable.abc_btn_radio_material_yellow)));
-        items.add(new NavigationItem("Метростроителей ", getResources().getDrawable(R.drawable.abc_btn_radio_material_red)));
-        items.add(new NavigationItem("Вокзальная ", getResources().getDrawable(R.drawable.abc_btn_radio_material_grey)));
-        items.add(new NavigationItem("Расписание ", getResources().getDrawable(R.drawable.abc_btn_check_material)));
+
+        items.add(new NavigationItem("Коммунаровская ", getResources().getDrawable(R.drawable.circle_brown) ));
+        items.add(new NavigationItem("Проспект-свободы ", getResources().getDrawable(R.drawable.circle_green) ));
+        items.add(new NavigationItem("Заводская ", getResources().getDrawable(R.drawable.circle_blue) ));
+        items.add(new NavigationItem("Металурговская ", getResources().getDrawable(R.drawable.circle_yellow) ));
+        items.add(new NavigationItem("Метростроителей ", getResources().getDrawable(R.drawable.circle_red) ));
+        items.add(new NavigationItem("Вокзальная ", getResources().getDrawable(R.drawable.circle_grey) ));
+        items.add(new NavigationItem("Расписание ", getResources().getDrawable(R.drawable.square_purple) ));
         return items;
     }
 
