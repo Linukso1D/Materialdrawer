@@ -3,7 +3,7 @@
     <color name="myPrimaryDarkColor">#3F51B5</color>
     <color name="myAccentColor">#90CAF9</color>
     <color name="myDrawerBackground">#E3F2FD</color>
-    <color name="myWindowBackground">#64B5F6</color>
+    <color name="myWindowBackground">#f5f5f5</color>
     <color name="myTextPrimaryColor">#FFFFFF</color>
     <color name="myNavigationColor">#000000</color>
 

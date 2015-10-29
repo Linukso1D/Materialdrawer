@@ -7,6 +7,9 @@ import android.graphics.DashPathEffect;
 import android.graphics.Paint;
 import android.graphics.Path;
 import android.graphics.PathMeasure;
+import android.graphics.Typeface;
+import android.os.Handler;
+import android.os.Looper;
 import android.util.AttributeSet;
 import android.util.Log;
 import android.view.MotionEvent;
@@ -16,6 +19,8 @@ import android.widget.ImageView;
 import java.util.ArrayList;
 import java.util.Map;
 
+import static android.graphics.Color.HSVToColor;
+import static android.graphics.Color.parseColor;
 import static com.dcodepages.material.MetroNaviF.ElipseType.diStartDrawX;
 import static com.dcodepages.material.MetroNaviF.ElipseType.diStartDrawY;
 import static com.dcodepages.material.MetroNaviF.ScreenMetr.getBlue;
@@ -25,6 +30,7 @@ import static com.dcodepages.material.MetroNaviF.ScreenMetr.getGreen;
 import static com.dcodepages.material.MetroNaviF.ScreenMetr.getGrey;
 import static com.dcodepages.material.MetroNaviF.ScreenMetr.getInstance;
 import static com.dcodepages.material.MetroNaviF.ScreenMetr.getRed;
+import static com.dcodepages.material.MetroNaviF.ScreenMetr.getTextColor;
 import static com.dcodepages.material.MetroNaviF.ScreenMetr.getYellow;
 
 class DrawView extends View  {
@@ -57,17 +63,17 @@ class DrawView extends View  {
             Radius = 30;
             PaintWidth = 10;
             PaintWidthElipse = 8;
-            SizeText=30;
+            SizeText=20;
         } else if (dpi > 160 && dpi < 241) {
             Radius = 30;
             PaintWidth = 13;
             PaintWidthElipse = 8;
-            SizeText=50;
+            SizeText=40;
         } else if (dpi > 240 && dpi < 321) {
             Radius = 50;
             PaintWidth = 16;
             PaintWidthElipse = 14;
-            SizeText=60;
+            SizeText=50;
         } else if (dpi > 320) {
             Radius = 80;
             PaintWidth = 20;
@@ -86,16 +92,18 @@ class DrawView extends View  {
 
         Black = new Paint();
         Black.setStyle(Paint.Style.STROKE);
-        Black.setColor(Color.BLACK);
-        Black.setStrokeWidth(PaintWidth / 3);
+        Black.setColor(getTextColor());
+        Black.setStrokeWidth(PaintWidth / 4);
         Black.setTextAlign(Paint.Align.CENTER);
         Black.setTextSize(SizeText);
 
         Text = new Paint();
         Text.setStyle(Paint.Style.FILL);
-        Text.setColor(Color.BLACK);
-        Text.setStrokeWidth(PaintWidth / 3);
+        Text.setColor(getTextColor());
+        Text.setStrokeWidth(PaintWidth / 4);
 
+        Typeface typ = Typeface.createFromAsset(getContext().getAssets(), "Roboto-Light.ttf");
+        Text.setTypeface(typ);
         Text.setTextSize(SizeText);
 
         Cir1 = new Paint();
@@ -104,13 +112,11 @@ class DrawView extends View  {
         Cir1.setColor(getGrey());
         Cir1.setStrokeWidth(PaintWidthElipse);
 
-
         Cir2 = new Paint();
         Cir2.setStyle(Paint.Style.STROKE);
         Cir2.setAntiAlias(true);
         Cir2.setColor(getRed());
         Cir2.setStrokeWidth(PaintWidthElipse);
-
 
         Cir3 = new Paint();
         Cir3.setStyle(Paint.Style.STROKE);
@@ -153,17 +159,17 @@ class DrawView extends View  {
             Radius = 30;
             PaintWidth = 10;
             PaintWidthElipse = 8;
-            SizeText=30;
+            SizeText=20;
         } else if (dpi > 160 && dpi < 241) {
             Radius = 30;
             PaintWidth = 13;
             PaintWidthElipse = 8;
-            SizeText=50;
+            SizeText=40;
         } else if (dpi > 240 && dpi < 321) {
             Radius = 50;
             PaintWidth = 16;
             PaintWidthElipse = 14;
-            SizeText=60;
+            SizeText=50;
         } else if (dpi > 320) {
             Radius = 80;
             PaintWidth = 20;
@@ -182,16 +188,18 @@ class DrawView extends View  {
 
         Black = new Paint();
         Black.setStyle(Paint.Style.STROKE);
-        Black.setColor(Color.BLACK);
-        Black.setStrokeWidth(PaintWidth / 3);
+        Black.setColor(getTextColor());
+        Black.setStrokeWidth(PaintWidth / 4);
         Black.setTextAlign(Paint.Align.CENTER);
         Black.setTextSize(SizeText);
 
         Text = new Paint();
         Text.setStyle(Paint.Style.FILL);
-        Text.setColor(Color.BLACK);
-        Text.setStrokeWidth(PaintWidth / 3);
+        Text.setColor(getTextColor());
+        Text.setStrokeWidth(PaintWidth / 4);
 
+        Typeface typ = Typeface.createFromAsset(getContext().getAssets(), "Roboto-Light.ttf");
+        Text.setTypeface(typ);
         Text.setTextSize(SizeText);
 
         Cir1 = new Paint();
@@ -247,17 +255,17 @@ class DrawView extends View  {
             Radius = 30;
             PaintWidth = 10;
             PaintWidthElipse = 8;
-            SizeText=30;
+            SizeText=20;
         } else if (dpi > 160 && dpi < 241) {
             Radius = 30;
             PaintWidth = 13;
             PaintWidthElipse = 8;
-            SizeText=50;
+            SizeText=40;
         } else if (dpi > 240 && dpi < 321) {
             Radius = 50;
             PaintWidth = 16;
             PaintWidthElipse = 14;
-            SizeText=60;
+            SizeText=50;
         } else if (dpi > 320) {
             Radius = 80;
             PaintWidth = 20;
@@ -276,16 +284,18 @@ class DrawView extends View  {
 
         Black = new Paint();
         Black.setStyle(Paint.Style.STROKE);
-        Black.setColor(Color.BLACK);
-        Black.setStrokeWidth(PaintWidth / 3);
+        Black.setColor(getTextColor());
+        Black.setStrokeWidth(PaintWidth / 4);
         Black.setTextAlign(Paint.Align.CENTER);
         Black.setTextSize(SizeText);
 
         Text = new Paint();
         Text.setStyle(Paint.Style.FILL);
-        Text.setColor(Color.BLACK);
-        Text.setStrokeWidth(PaintWidth / 3);
+        Text.setColor(getTextColor());
+        Text.setStrokeWidth(PaintWidth / 4);
 
+        Typeface typ = Typeface.createFromAsset(getContext().getAssets(), "Roboto-Light.ttf");
+        Text.setTypeface(typ);
         Text.setTextSize(SizeText);
 
         Cir1 = new Paint();
@@ -480,105 +490,129 @@ class DrawView extends View  {
         } else {
 
 
-            int kol = 0;
-            // The drawing have been done, draw it entirely
-            for (int i = 0; i < this.mListPath.size(); i++) {
+                int kol = 0;
+                // The drawing have been done, draw it entirely
+                for (int i = 0; i < this.mListPath.size(); i++) {
 
 
-                if (i % 2 == 1) {
-                    canvas.drawPath(this.mListPath.get(i), mPaintLine);
-                }
-                if (i % 2 == 0) {
-                    switch (kol) {
-                        case 0:
-                            canvas.drawPath(this.mListPath.get(i), Cir1);
-                            break;
-                        case 1:
-                            canvas.drawPath(this.mListPath.get(i), Cir2);
-                            break;
-                        case 2:
-                            canvas.drawPath(this.mListPath.get(i), Cir3);
-                            break;
-                        case 3:
-                            canvas.drawPath(this.mListPath.get(i), Cir4);
-                            break;
-                        case 4:
-                            canvas.drawPath(this.mListPath.get(i), Cir5);
-                            break;
-                        case 5:
-                            canvas.drawPath(this.mListPath.get(i), Cir6);
-                            break;
+                    if (i % 2 == 1) {
+                        canvas.drawPath(this.mListPath.get(i), mPaintLine);
                     }
-                    kol++;
+                    if (i % 2 == 0) {
+                        switch (kol) {
+                            case 0:
+                                canvas.drawPath(this.mListPath.get(i), Cir1);
+                                break;
+                            case 1:
+                                canvas.drawPath(this.mListPath.get(i), Cir2);
+                                break;
+                            case 2:
+                                canvas.drawPath(this.mListPath.get(i), Cir3);
+                                break;
+                            case 3:
+                                canvas.drawPath(this.mListPath.get(i), Cir4);
+                                break;
+                            case 4:
+                                canvas.drawPath(this.mListPath.get(i), Cir5);
+                                break;
+                            case 5:
+                                canvas.drawPath(this.mListPath.get(i), Cir6);
+                                break;
+                        }
+                        kol++;
+
+                    }
+
 
                 }
+                EliLine = 10;
 
 
-            }
-            StatusTread=true;
         }
         } else {
-
-            this.Black.setPathEffect(new DashPathEffect(mIntervals, 40f));
-            this.Text.setPathEffect(new DashPathEffect(mIntervals, 40f));
-            int kol = 0;
-            for (int i = 0; i < this.mListPath.size(); i++) {
+            try {
 
 
-                if (i % 2 == 1) {
-                    canvas.drawPath(this.mListPath.get(i), mPaintLine);
-                }
-                if (i % 2 == 0) {
-                    switch (kol) {
-                        case 0:
-                            canvas.drawPath(this.mListPath.get(i), Cir1);
-                            break;
-                        case 1:
-                            canvas.drawPath(this.mListPath.get(i), Cir2);
-                            break;
-                        case 2:
-                            canvas.drawPath(this.mListPath.get(i), Cir3);
-                            break;
-                        case 3:
-                            canvas.drawPath(this.mListPath.get(i), Cir4);
-                            break;
-                        case 4:
-                            canvas.drawPath(this.mListPath.get(i), Cir5);
-                            break;
-                        case 5:
-                            canvas.drawPath(this.mListPath.get(i), Cir6);
-                            break;
+                int kol = 0;
+                for (int i = 0; i < this.mListPath.size(); i++) {
+
+
+                    if (i % 2 == 1) {
+                        canvas.drawPath(this.mListPath.get(i), mPaintLine);
                     }
-                    kol++;
+                    if (i % 2 == 0) {
+                        switch (kol) {
+                            case 0:
+                                canvas.drawPath(this.mListPath.get(i), Cir1);
+                                break;
+                            case 1:
+                                canvas.drawPath(this.mListPath.get(i), Cir2);
+                                break;
+                            case 2:
+                                canvas.drawPath(this.mListPath.get(i), Cir3);
+                                break;
+                            case 3:
+                                canvas.drawPath(this.mListPath.get(i), Cir4);
+                                break;
+                            case 4:
+                                canvas.drawPath(this.mListPath.get(i), Cir5);
+                                break;
+                            case 5:
+                                canvas.drawPath(this.mListPath.get(i), Cir6);
+                                break;
+                        }
+                        kol++;
+
+                    }
+
 
                 }
 
 
-            }
-
-
-                if (EliLine != 10)
-                {
+                if (EliLine != 10) {
                     Log.d("DrawC", "EliLine != 10");
                     Path nwPashMesh = getPathLine(0, 0, 0);
                     this.mPathMeasure.setPath(nwPashMesh, false);
-                    switch (EliLine)
-                    {
-                        case 1: Text.setTextAlign(Paint.Align.LEFT); canvas.drawText("text", (float) El1.getLineCx(), (float) El1.getLineCy(), Text);  break;
-                        case 2: Text.setTextAlign(Paint.Align.LEFT); canvas.drawText("text", (float) El2.getLineCx(), (float) El2.getLineCy(), Text); break;
-                        case 3: Text.setTextAlign(Paint.Align.LEFT); canvas.drawText("text", (float) El3.getLineCx(), (float) El3.getLineCy(), Text); break;
-                        case 4: Text.setTextAlign(Paint.Align.RIGHT);canvas.drawText("text", (float) El4.getLineCx(), (float) El4.getLineCy(), Text); break;
-                        case 5: Text.setTextAlign(Paint.Align.RIGHT); canvas.drawText("text", (float) El5.getLineCx(), (float) El5.getLineCy(), Text);break;
-                        case 6: Text.setTextAlign(Paint.Align.RIGHT); canvas.drawText("text", (float) El6.getLineCx(), (float) El6.getLineCy(), Text); break;
-                        default:break;
+                    switch (EliLine) {
+                        case 1:
+                            Text.setTextAlign(Paint.Align.LEFT);
+                            canvas.drawText("text", (float) El1.getLineCx(), (float) El1.getLineCy()-PaintWidth, Text);
+                            break;
+                        case 2:
+                            Text.setTextAlign(Paint.Align.LEFT);
+                            canvas.drawText("text", (float) El2.getLineCx(), (float) El2.getLineCy()-PaintWidth, Text);
+                            break;
+                        case 3:
+                            Text.setTextAlign(Paint.Align.LEFT);
+                            canvas.drawText("text", (float) El3.getLineCx(), (float) El3.getLineCy()-PaintWidth, Text);
+                            break;
+                        case 4:
+                            Text.setTextAlign(Paint.Align.RIGHT);
+                            canvas.drawText("text", (float) El4.getLineCx(), (float) El4.getLineCy()-PaintWidth, Text);
+                            break;
+                        case 5:
+                            Text.setTextAlign(Paint.Align.RIGHT);
+                            canvas.drawText("text", (float) El5.getLineCx(), (float) El5.getLineCy()-PaintWidth, Text);
+                            break;
+                        case 6:
+                            Text.setTextAlign(Paint.Align.RIGHT);
+                            canvas.drawText("text", (float) El6.getLineCx(), (float) El6.getLineCy()-PaintWidth, Text);
+                            break;
+                        default:
+                            break;
 
                     }
 
 
                     canvas.drawPath(nwPashMesh, Black);
                 }
-            super.invalidate();
+                super.invalidate();
 
+
+            } catch (Exception e) {
+                Log.d("DrawC", "Exeprion " + e);
+
+            }
         }
     }
 
@@ -658,7 +692,7 @@ class DrawView extends View  {
     }
 
     @Override
-    public synchronized boolean onTouchEvent(MotionEvent event) {
+    public boolean onTouchEvent(MotionEvent event) {
 
         float evX = event.getX();
         float evY = event.getY();
@@ -690,9 +724,13 @@ class DrawView extends View  {
                             public void run() {
 
                                 EliLine = 1;
+                                new Handler(Looper.getMainLooper()).post(new Runnable() {
+                                    @Override
+                                    public void run() {
+                                      invalidate();
+                                    }
+                                });
 
-                                invalidate();
-                                Log.d("DrawC", "sleep thread");
                                 try {
                                     sleep(6000);
                                 } catch (InterruptedException e) {
@@ -728,8 +766,12 @@ class DrawView extends View  {
                             public void run() {
 
                                 EliLine = 2;
-
-                                invalidate();
+                                new Handler(Looper.getMainLooper()).post(new Runnable() {
+                                    @Override
+                                    public void run() {
+                                        invalidate();
+                                    }
+                                });
                                 Log.d("DrawC", "sleep thread");
                                 try {
                                     sleep(6000);
@@ -763,7 +805,12 @@ class DrawView extends View  {
 
                                 EliLine = 3;
 
-                                invalidate();
+                                new Handler(Looper.getMainLooper()).post(new Runnable() {
+                                    @Override
+                                    public void run() {
+                                        invalidate();
+                                    }
+                                });
                                 Log.d("DrawC", "sleep thread");
                                 try {
                                     sleep(6000);
@@ -797,7 +844,12 @@ class DrawView extends View  {
 
                                 EliLine = 4;
 
-                                invalidate();
+                                new Handler(Looper.getMainLooper()).post(new Runnable() {
+                                    @Override
+                                    public void run() {
+                                        invalidate();
+                                    }
+                                });
                                 Log.d("DrawC", "sleep thread");
                                 try {
                                     sleep(6000);
@@ -832,7 +884,12 @@ class DrawView extends View  {
 
                                 EliLine = 5;
 
-                                invalidate();
+                                new Handler(Looper.getMainLooper()).post(new Runnable() {
+                                    @Override
+                                    public void run() {
+                                        invalidate();
+                                    }
+                                });
                                 Log.d("DrawC", "sleep thread");
                                 try {
                                     sleep(6000);
@@ -867,7 +924,12 @@ class DrawView extends View  {
 
                                 EliLine = 6;
 
-                                invalidate();
+                                new Handler(Looper.getMainLooper()).post(new Runnable() {
+                                    @Override
+                                    public void run() {
+                                        invalidate();
+                                    }
+                                });
                                 Log.d("DrawC", "sleep thread");
                                 try {
                                     sleep(6000);

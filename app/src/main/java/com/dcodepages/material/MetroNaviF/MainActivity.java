@@ -1,11 +1,7 @@
 package com.dcodepages.material.MetroNaviF;
 
-import android.content.Context;
-import android.graphics.Canvas;
-import android.graphics.Color;
-import android.graphics.Paint;
+import android.graphics.Typeface;
 import android.os.Bundle;
-import android.support.annotation.Nullable;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarActivity;
 import android.support.v7.widget.Toolbar;
@@ -17,39 +13,20 @@ import android.view.View;
 import android.widget.TextView;
 import android.widget.Toast;
 
-
-
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.GregorianCalendar;
-import java.util.HashMap;
-import java.util.Iterator;
-import java.util.Map;
-import java.util.Set;
 import java.util.Timer;
 import java.util.TimerTask;
+
+import static com.dcodepages.material.MetroNaviF.ScreenMetr.getInstance;
 
 /**
  * Created by maxxl2012 on 11/11/2015.
  */
 public class MainActivity extends ActionBarActivity implements DrawerCallbacks {
 
-    private Toolbar mToolbar;
-
-    private Nav_DrawerFragment mNavigationNavDrawerFragment;
-
-    TextView ShowInfText;
-    TextView ShowInfmapText;
-
-
-// хранения расписание в двух масивах
-     int  ShedTime[]=new int [1700];
-     String ShedName []= new String[1700];
-    int modiX,modiY;
-
-    //переменніе вівода в текстовое поле
-    int Out1,Out2;
     public String
             HVokKom,
             VokKom,
@@ -70,7 +47,20 @@ public class MainActivity extends ActionBarActivity implements DrawerCallbacks {
             HPrSvVok,
             HKomVok,
             KomVok;
-    public String NaprFirst,NaprTwo;
+    public String NaprFirst, NaprTwo;
+    TextView ShowInfText;
+    TextView ShowInfmapText;
+
+
+    // хранения расписание в двух масивах
+    int ShedTime[] = new int[1700];
+    String ShedName[] = new String[1700];
+    int modiX, modiY;
+
+    //переменніе вівода в текстовое поле
+    int Out1, Out2;
+    Calendar newCal = new GregorianCalendar();
+    SimpleDateFormat Time = null;
     //H - hollyday
     //Vok - Vokzal
     //Met -Metrostroiteli
@@ -78,11 +68,11 @@ public class MainActivity extends ActionBarActivity implements DrawerCallbacks {
     //Zav - zavodskaya
     //PrSv - ProspektSvobotu
     //Kom - komunarovskaya
-
-    Calendar newCal = new GregorianCalendar();
-    SimpleDateFormat Time = null;
     Date currentDate = null;
     int parsetime;
+    private Toolbar mToolbar;
+    private Nav_DrawerFragment mNavigationNavDrawerFragment;
+    private int SizeText;
 
     //Расчет времени
     public int Time_Minus(int a, int b) { // a - b
@@ -101,27 +91,25 @@ public class MainActivity extends ActionBarActivity implements DrawerCallbacks {
     }
 //добавление записи в масивы
 
-    void ShedulePut(String str, int num)
-    {
-        for(int i=0;i<1700;i++)
-        {
-            if(ShedTime[i]==0) {
+    void ShedulePut(String str, int num) {
+        for (int i = 0; i < 1700; i++) {
+            if (ShedTime[i] == 0) {
                 ShedTime[i] = num;
-                 ShedName[i] = str;
+                ShedName[i] = str;
                 break;
             }
         }
-        
+
 
     }
+
     //Инициализация расписания
     void init() {
-  
-for(int i=0;i<1700;i++)
-{
-    ShedTime[i]=0;
-    ShedName[i]="";
-}
+
+        for (int i = 0; i < 1700; i++) {
+            ShedTime[i] = 0;
+            ShedName[i] = "";
+        }
 
 
         // вокзальная - комунар выходной день
@@ -1701,21 +1689,20 @@ for(int i=0;i<1700;i++)
         else return true;
     }
 
-        //ТУТ НУЖНО ИСКАТЬ
-    int Search(int noowtime,String Napr)
-    {
-        int res=0;
+    //ТУТ НУЖНО ИСКАТЬ
+    int Search(int noowtime, String Napr) {
+        int res = 0;
         Log.v("Metr", "Serch");
-for(int i=0;i<1700;i++) {
-    if (ShedName[i].equals(Napr)) {
-        if (ShedTime[i] > noowtime) {
-            res = ShedTime[i];
+        for (int i = 0; i < 1700; i++) {
+            if (ShedName[i].equals(Napr)) {
+                if (ShedTime[i] > noowtime) {
+                    res = ShedTime[i];
 
-            break;
+                    break;
+                }
+            }
+
         }
-    }
-
-}
 
 
         return res;
@@ -1723,32 +1710,28 @@ for(int i=0;i<1700;i++) {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-            super.onCreate(savedInstanceState);
+        super.onCreate(savedInstanceState);
 
-            DisplayMetrics dm = getApplicationContext().getResources().getDisplayMetrics();
-            int densityDpi = dm.densityDpi;
-            int width = dm.widthPixels;
-            int height = dm.heightPixels;
-            ScreenMetr metrics=ScreenMetr.getInstance();
-            metrics.initDisplay(densityDpi, width, height);
+        DisplayMetrics dm = getApplicationContext().getResources().getDisplayMetrics();
+        int densityDpi = dm.densityDpi;
+        int width = dm.widthPixels;
+        int height = dm.heightPixels;
+        ScreenMetr metrics = getInstance();
+        metrics.initDisplay(densityDpi, width, height);
 
-            //drawView=new DrawView(MyCont);
+        //drawView=new DrawView(MyCont);
 
-            setContentView(R.layout.activity_main);
+        setContentView(R.layout.activity_main);
 
-            //View v = (View)findViewById(R.id.DrawV);
+
 
         mToolbar = (Toolbar) findViewById(R.id.toolbar_actionbar);
         setSupportActionBar(mToolbar);
         getSupportActionBar().setDisplayShowHomeEnabled(true);
-        NaprFirst="KomVok";NaprTwo="NULL";
+        NaprFirst = "KomVok";
+        NaprTwo = "NULL";
 
 
-
-            
-                
-            
-            
         mToolbar.setOnTouchListener(new View.OnTouchListener() {
             @Override
             public boolean onTouch(View v, MotionEvent event) {
@@ -1765,20 +1748,17 @@ for(int i=0;i<1700;i++) {
 //логика
         ShowInfText = (TextView) findViewById(R.id.Test);
         ShowInfmapText = (TextView) findViewById(R.id.Test2);
+        ShowInfText.setTypeface(Typeface.createFromAsset(
+                getAssets(), "Roboto-Light.ttf"));
+        ShowInfmapText.setTypeface(Typeface.createFromAsset(
+                getAssets(), "Roboto-Light.ttf"));
+
+
+
         init();
 
 
-
-
-
-
-
-
 // Отобразим набор
-
-
-
-
 
 
         //вывод по таймеру
@@ -1794,25 +1774,21 @@ for(int i=0;i<1700;i++) {
                             Runnable mUpdateUITimerTask = new Runnable() {
                                 public void run() {
                                     // do whatever you want to change here, like:
-                                    if(modiX<parsetime||modiY<parsetime) {
+                                    if (modiX < parsetime || modiY < parsetime) {
                                         modiX = Search(parsetime, NaprFirst);
                                         modiY = Search(parsetime, NaprTwo);
 
                                     }
-                                    if(!NaprFirst.equals("NULL")) {
+                                    if (!NaprFirst.equals("NULL")) {
                                         ShowInfmapText.setText(Integer.toString(Time_Minus(modiX, parsetime)) + " \nВокзал ");
-                                    }
-                                    else
-                                    {
-                                        ShowInfmapText.setText( "Конечная\nВокзал ");
+                                    } else {
+                                        ShowInfmapText.setText("Конечная\nВокзал ");
                                     }
 
-                                    if(!NaprTwo.equals("NULL")) {
-                                        ShowInfText.setText(Integer.toString(Time_Minus(modiY,parsetime)) + " \nКоммунар " );
-                                    }
-                                    else
-                                    {
-                                        ShowInfText.setText( "Конечная\nКоммунар ");
+                                    if (!NaprTwo.equals("NULL")) {
+                                        ShowInfText.setText(Integer.toString(Time_Minus(modiY, parsetime)) + " \nКоммунар ");
+                                    } else {
+                                        ShowInfText.setText("Конечная\nКоммунар ");
                                     }
 
                                 }
@@ -1825,7 +1801,7 @@ for(int i=0;i<1700;i++) {
                             int day = newCal.get(Calendar.DAY_OF_WEEK);
                             parsetime = (Integer.parseInt(Time.format(currentDate).replaceAll(" ", "")));
 
-                           // Out1=Time_Minus(Search(parsetime,"PrSvVok"), parsetime);
+                            // Out1=Time_Minus(Search(parsetime,"PrSvVok"), parsetime);
 
                             // вызов функции вывод ранебл
                             runOnUiThread(mUpdateUITimerTask);
@@ -1844,9 +1820,6 @@ for(int i=0;i<1700;i++) {
 
             ;
         }, 0, 1000);
-
-
-
 
 
     }
@@ -1869,20 +1842,44 @@ for(int i=0;i<1700;i++) {
         //PrSv - ProspektSvobotu
         //Kom - komunarovskaya
 
-        modiX=0;
-        modiY=0;
-            if ( position ==0  ) {NaprFirst="KomVok";NaprTwo="NULL"; }
-            if ( position ==1  ) {NaprFirst="PrSvVok";NaprTwo="PrSvKom"; }
-            if ( position ==2  ) {NaprFirst="ZavVok";NaprTwo="ZavKom"; }
-            if ( position ==3  ) {NaprFirst="LurgVok";NaprTwo="LurgKom"; }
-            if ( position ==4  ) {NaprFirst="MetVok";NaprTwo="MetKom"; }
-            if ( position ==5  ) {NaprFirst="NULL";NaprTwo="VokKom"; }
-            if ( position ==6  ) {NaprFirst="RASP";NaprTwo="RASP"; }
+        modiX = 0;
+        modiY = 0;
+        if (position == 0) {
+            NaprFirst = "KomVok";
+            NaprTwo = "NULL";
+        }
+        if (position == 1) {
+            NaprFirst = "PrSvVok";
+            NaprTwo = "PrSvKom";
+        }
+        if (position == 2) {
+            NaprFirst = "ZavVok";
+            NaprTwo = "ZavKom";
+        }
+        if (position == 3) {
+            NaprFirst = "LurgVok";
+            NaprTwo = "LurgKom";
+        }
+        if (position == 4) {
+            NaprFirst = "MetVok";
+            NaprTwo = "MetKom";
+        }
+        if (position == 5) {
+            NaprFirst = "NULL";
+            NaprTwo = "VokKom";
+        }
+        if (position == 6) {
+            NaprFirst = "RASP";
+            NaprTwo = "RASP";
+        }
         //Если выходной добавляем Н префикс для поиска направления по вых дню
-        if(!WorkedDay()){NaprFirst="H"+NaprFirst;NaprTwo="H"+NaprTwo;}
+        if (!WorkedDay()) {
+            NaprFirst = "H" + NaprFirst;
+            NaprTwo = "H" + NaprTwo;
+        }
 
         //при клике на пункт меню
-        Toast.makeText(this, "item no: " + position + " 1 "+NaprFirst +" 2 " +NaprTwo, Toast.LENGTH_SHORT).show();
+        Toast.makeText(this, "item no: " + position + " 1 " + NaprFirst + " 2 " + NaprTwo, Toast.LENGTH_SHORT).show();
 
     }
 

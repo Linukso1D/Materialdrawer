@@ -24,9 +24,12 @@ private static final int blue=  Color.rgb(68, 135, 255);
 private static final int green= Color.rgb(76, 175, 80);
 private static final int brown= Color.rgb(121, 85, 72);
     private static final int white= Color.rgb(250, 250, 250);
+    private static final int TextColor= Color.rgb(55,71,79);
+
 
 
 private static final int blueline= Color.rgb(2, 119, 189);
+
 
 
 
@@ -71,6 +74,10 @@ private static final int blueline= Color.rgb(2, 119, 189);
 
     public static int getGrey() {
         return grey;
+    }
+
+    public static int getTextColor() {
+        return TextColor;
     }
 
     public static int getRed() {
