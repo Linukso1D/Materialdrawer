@@ -4,4 +4,12 @@
     <string name="drawer_open">Menu opened</string>
     <string name="drawer_close">Menu closed</string>
     <string name="action_settings">Settings</string>
+    <string-array name="station">
+        <item>Вокзальная</item>
+        <item>Метростроителей</item>
+        <item>Металурговская</item>
+        <item>Заводская</item>
+        <item>Проспект-свободы</item>
+        <item>Коммунаровская</item>
+    </string-array>
 </resources>

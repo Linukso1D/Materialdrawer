@@ -10,6 +10,8 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MotionEvent;
 import android.view.View;
+import android.widget.ArrayAdapter;
+import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -30,8 +32,6 @@ import static com.dcodepages.material.MetroNaviF.ScreenMetr.getInstance;
 public class MainActivity extends ActionBarActivity implements DrawerCallbacks {
 
 
-    //TODO 30.10.2015
-    ArrayList OstToVokzal,OstToKomunar;
     public String
             HVokKom,
             VokKom,
@@ -53,15 +53,13 @@ public class MainActivity extends ActionBarActivity implements DrawerCallbacks {
             HKomVok,
             KomVok;
     public String NaprFirst, NaprTwo;
+    public int modiX, modiY, modiX1, modiX2, modiY1, modiY2;
+
     TextView ShowInfText;
     TextView ShowInfmapText;
-
-
     // хранения расписание в двух масивах
     int ShedTime[] = new int[1700];
     String ShedName[] = new String[1700];
-    public int modiX, modiY,modiX1,modiX2,modiY1,modiY2;
-
     //переменніе вівода в текстовое поле
     int Out1, Out2;
     Calendar newCal = new GregorianCalendar();
@@ -78,10 +76,45 @@ public class MainActivity extends ActionBarActivity implements DrawerCallbacks {
     private Toolbar mToolbar;
     private Nav_DrawerFragment mNavigationNavDrawerFragment;
     private int SizeText;
+    //TODO 30.10.2015
+    ArrayList OstToVokzal, OstToKomunar;
+
+    //преабразование времении в норм вид
+    public static String ConvertTime(int t) {
+        if (t != 0) {
+            String ret;
+            ret = Integer.toString(t);
+            if (ret.length() > 3) {
+                ret = ret.substring(0, 2) + ":" + ret.substring(2, ret.length());
+
+            } else {
+                ret = ret.substring(0, 1) + ":" + ret.substring(1, ret.length());
+
+            }
+            return ret;
+        }
+        return "00:00";
+    }
+
+    public static int ConvertOfTime(String str) {
+        String ret;
+        ret = str;
+        ret = ret.substring(0, 2) + ret.substring(3, ret.length());
+        return Integer.parseInt(ret);
+    }
+
+    // возвращает тру если рабочий день недели
+    public static boolean WorkedDay() {
+        Calendar newCal = new GregorianCalendar();
+        final int day = newCal.get(Calendar.DAY_OF_WEEK);
+        if (day == 1 || day == 7) return false;
+        else return true;
+    }
+//добавление записи в масивы
 
     //Расчет времени
     public int Time_Minus(int a, int b) { // a - b
-       int ha = a / 100, hb = b / 100;
+        int ha = a / 100, hb = b / 100;
         int ma = a % 100, mb = b % 100;
 
         if (mb > ma) { //1305 - 1240 => 1265 - 1240
@@ -96,52 +129,6 @@ public class MainActivity extends ActionBarActivity implements DrawerCallbacks {
 
 
     }
-    public int Time_Plus(int a,int b)
-    {
-        String newTime="";
-        try {
-        String myTime = ConvertTime(a);
-        SimpleDateFormat df = new SimpleDateFormat("HH:mm");
-        Date d = new Date();
-        d = df.parse(myTime);
-        Calendar cal = Calendar.getInstance();
-        cal.setTime(d);
-        cal.add(Calendar.MINUTE, b);
-        newTime = df.format(cal.getTime());
-        return ConvertOfTime(newTime);
-        } catch (ParseException e) {
-            e.printStackTrace();
-        }
-        return 0;
-    }
-    //преабразование времении в норм вид
-    public static String ConvertTime(int t)
-    {if(t!=0) {
-        String ret;
-        ret = Integer.toString(t);
-        if(ret.length()>3) {
-            ret = ret.substring(0, 2) + ":" + ret.substring(2, ret.length());
-
-        }
-        else
-        {
-            ret = ret.substring(0, 1) + ":" + ret.substring(1, ret.length());
-
-        }
-        return ret;
-    }
-        return "00:00";
-    }
-
-
-    public static int ConvertOfTime(String str)
-    {
-        String ret;
-        ret = str;
-        ret = ret.substring(0, 2) + ret.substring(3, ret.length());
-        return Integer.parseInt(ret);
-    }
-//добавление записи в масивы
 
     void ShedulePut(String str, int num) {
         for (int i = 0; i < 1700; i++) {
@@ -1734,18 +1721,28 @@ public class MainActivity extends ActionBarActivity implements DrawerCallbacks {
 
     }
 
-    // возвращает тру если рабочий день недели
-   public static boolean WorkedDay() {
-       Calendar newCal = new GregorianCalendar();
-        final int day = newCal.get(Calendar.DAY_OF_WEEK);
-        if (day == 1 || day == 7) return false;
-        else return true;
+    public int Time_Plus(int a, int b) {
+        String newTime = "";
+        try {
+            String myTime = ConvertTime(a);
+            SimpleDateFormat df = new SimpleDateFormat("HH:mm");
+            Date d = new Date();
+            d = df.parse(myTime);
+            Calendar cal = Calendar.getInstance();
+            cal.setTime(d);
+            cal.add(Calendar.MINUTE, b);
+            newTime = df.format(cal.getTime());
+            return ConvertOfTime(newTime);
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+        return 0;
     }
 
     //ТУТ НУЖНО ИСКАТЬ
     int Search(int noowtime, String Napr) {
         int res = 0;
-        Log.v("Metr", "Serch "+noowtime);
+        Log.v("Metr", "Serch " + noowtime);
         for (int i = 0; i < 1700; i++) {
             if (ShedName[i].equals(Napr)) {
                 if (ShedTime[i] > noowtime) {
@@ -1760,31 +1757,28 @@ public class MainActivity extends ActionBarActivity implements DrawerCallbacks {
 
         return res;
     }
-    public int TimeToFinish(String str,ArrayList Arr,int nowtime,int a )
-    {
-        int sumtime1=0;
-        boolean flag=false;
-        int res=0;
-        for (Object key:Arr) {
-            if(key.toString().equals(str)||flag)
-            {
-                flag=true;
-                if(sumtime1==0) {
+
+    public int TimeToFinish(String str, ArrayList Arr, int nowtime, int a) {
+        int sumtime1 = 0;
+        boolean flag = false;
+        int res = 0;
+        for (Object key : Arr) {
+            if (key.toString().equals(str) || flag) {
+                flag = true;
+                if (sumtime1 == 0) {
                     sumtime1 = Search(nowtime, key.toString());
-                }
-                else
-                {
+                } else {
                     int k;
-                    k= sumtime1;
+                    k = sumtime1;
 
                     sumtime1 = Search(sumtime1, key.toString());
 
-                    res+=Time_Minus(k, sumtime1);
-                    nowtime=(Time_Plus(nowtime,res));
+                    res += Time_Minus(k, sumtime1);
+                    nowtime = (Time_Plus(nowtime, res));
                 }
             }
         }
-       return res+a;
+        return res + a;
     }
 
     @Override
@@ -1801,11 +1795,15 @@ public class MainActivity extends ActionBarActivity implements DrawerCallbacks {
         //drawView=new DrawView(MyCont);
 
         setContentView(R.layout.activity_main);
+        ShowInfText = (TextView) findViewById(R.id.Test);
+        ShowInfmapText = (TextView) findViewById(R.id.Test2);
+
+
+
 //add arraylist list ostanovok
-        OstToVokzal=new ArrayList<String>();
-        OstToKomunar= new ArrayList<String>();
-        if(WorkedDay())
-        {
+        OstToVokzal = new ArrayList<String>();
+        OstToKomunar = new ArrayList<String>();
+        if (WorkedDay()) {
             //H - hollyday
             //Vok - Vokzal
             //Met -Metrostroiteli
@@ -1820,7 +1818,6 @@ public class MainActivity extends ActionBarActivity implements DrawerCallbacks {
             OstToVokzal.add("MetVok");
 
 
-
             OstToKomunar.add("VokKom");
             OstToKomunar.add("MetKom");
             OstToKomunar.add("LurgKom");
@@ -1828,15 +1825,12 @@ public class MainActivity extends ActionBarActivity implements DrawerCallbacks {
             OstToKomunar.add("PrSvKom");
 
 
-        }
-        else
-        {
+        } else {
             OstToVokzal.add("HKomVok");
             OstToVokzal.add("HPrSvVok");
             OstToVokzal.add("HZavVok");
             OstToVokzal.add("HLurgVok");
             OstToVokzal.add("HMetVok");
-
 
 
             OstToKomunar.add("HVokKom");
@@ -1853,13 +1847,12 @@ public class MainActivity extends ActionBarActivity implements DrawerCallbacks {
         getSupportActionBar().setDisplayShowHomeEnabled(true);
 
         //init station
-        if(WorkedDay()) {
+        if (WorkedDay()) {
             NaprFirst = "KomVok";
             NaprTwo = "NULL";
             metrics.setNapX(NaprFirst);
             metrics.setNapY(NaprTwo);
-        }else
-        {
+        } else {
             NaprFirst = "HKomVok";
             NaprTwo = "NULL";
             metrics.setNapX(NaprFirst);
@@ -1880,13 +1873,11 @@ public class MainActivity extends ActionBarActivity implements DrawerCallbacks {
         mNavigationNavDrawerFragment.setup(R.id.fragment_drawer, (DrawerLayout) findViewById(R.id.drawer), mToolbar);
 
 
-        ShowInfText = (TextView) findViewById(R.id.Test);
-        ShowInfmapText = (TextView) findViewById(R.id.Test2);
+
         ShowInfText.setTypeface(Typeface.createFromAsset(
                 getAssets(), "Roboto-Light.ttf"));
         ShowInfmapText.setTypeface(Typeface.createFromAsset(
                 getAssets(), "Roboto-Light.ttf"));
-
 
 
         init();
@@ -1910,37 +1901,37 @@ public class MainActivity extends ActionBarActivity implements DrawerCallbacks {
                                 public void run() {
                                     // do whatever you want to change here, like:
 
-                                        ScreenMetr screen = getInstance();
-                                        NaprFirst   =       screen.getNapX();
-                                        NaprTwo     =       screen.getNapY();
+                                    ScreenMetr screen = getInstance();
+                                    NaprFirst = screen.getNapX();
+                                    NaprTwo = screen.getNapY();
 
 
-                                        modiX = Search(parsetime, NaprFirst);
-                                        modiY = Search(parsetime, NaprTwo);
+                                    modiX = Search(parsetime, NaprFirst);
+                                    modiY = Search(parsetime, NaprTwo);
 
-                                        modiX1 = Search(modiX, NaprFirst);
-                                        modiY1 = Search(modiY, NaprTwo);
+                                    modiX1 = Search(modiX, NaprFirst);
+                                    modiY1 = Search(modiY, NaprTwo);
 
-                                        modiX2 = Search(modiX1, NaprFirst);
-                                        modiY2 = Search(modiY1, NaprTwo);
+                                    modiX2 = Search(modiX1, NaprFirst);
+                                    modiY2 = Search(modiY1, NaprTwo);
 
-                                        //TimeToFinish(NaprFirst,OstToVokzal,parsetime,0);
-                                        //TimeToFinish(NaprFirst,OstToVokzal,modiX,0);
-                                        //TimeToFinish(NaprFirst,OstToVokzal,modiX1,0);
+                                    //TimeToFinish(NaprFirst,OstToVokzal,parsetime,0);
+                                    //TimeToFinish(NaprFirst,OstToVokzal,modiX,0);
+                                    //TimeToFinish(NaprFirst,OstToVokzal,modiX1,0);
 
-                                      //  metrics.initModi(ConvertTime( modiX),ConvertTime(modiY),ConvertTime( modiX1),ConvertTime(modiY1),ConvertTime(modiX2),ConvertTime(modiY2));
+                                    //  metrics.initModi(ConvertTime( modiX),ConvertTime(modiY),ConvertTime( modiX1),ConvertTime(modiY1),ConvertTime(modiX2),ConvertTime(modiY2));
 
 
                                     if (!NaprFirst.equals("NULL")) {
                                         //Расчитывает время прибытия не точно
-                                     //   ShowInfmapText.setText(  "На вокзал: \n "+TimeToFinish(NaprFirst, OstToVokzal, parsetime, 0)+" мин.\n слейдуйщие:\n"+TimeToFinish(NaprFirst,OstToVokzal,modiX1,0)+" мин.\n"+TimeToFinish(NaprFirst,OstToVokzal,modiX2,0)+" мин.\n");
-                                       ShowInfmapText.setText(  "На вокзал:\n через "+Integer.toString(Time_Minus(modiX, parsetime))+" мин.\n следующие:\n"+ConvertTime(modiX1)+" мин.\n"+ConvertTime(modiX2)+" мин.\n");
+                                        //   ShowInfmapText.setText(  "На вокзал: \n "+TimeToFinish(NaprFirst, OstToVokzal, parsetime, 0)+" мин.\n слейдуйщие:\n"+TimeToFinish(NaprFirst,OstToVokzal,modiX1,0)+" мин.\n"+TimeToFinish(NaprFirst,OstToVokzal,modiX2,0)+" мин.\n");
+                                        ShowInfmapText.setText("На вокзал:\n через " + Integer.toString(Time_Minus(modiX, parsetime)) + " мин.\n следующие:\n" + ConvertTime(modiX1) + " мин.\n" + ConvertTime(modiX2) + " мин.\n");
                                     } else {
                                         ShowInfmapText.setText("Конечная\nВокзал ");
                                     }
 
                                     if (!NaprTwo.equals("NULL")) {
-                                        ShowInfText.setText(  "На коммунар:\n через "+Integer.toString(Time_Minus(modiY, parsetime))+" мин.\n следующие:\n"+ConvertTime(modiY1)+" мин.\n"+ConvertTime(modiY2)+" мин.\n");
+                                        ShowInfText.setText("На коммунар:\n через " + Integer.toString(Time_Minus(modiY, parsetime)) + " мин.\n следующие:\n" + ConvertTime(modiY1) + " мин.\n" + ConvertTime(modiY2) + " мин.\n");
                                     } else {
                                         ShowInfText.setText("Конечная\nКоммунар ");
                                     }
@@ -1995,44 +1986,130 @@ public class MainActivity extends ActionBarActivity implements DrawerCallbacks {
         //Zav - zavodskaya
         //PrSv - ProspektSvobotu
         //Kom - komunarovskaya
-ScreenMetr screen = getInstance();
-        modiX =modiX1=modiX2= 0;
-        modiY =modiY1=modiY2= 0;
+        ScreenMetr screen = getInstance();
+        View vt = findViewById(R.id.DrawV);
+
+        modiX = modiX1 = modiX2 = 0;
+        modiY = modiY1 = modiY2 = 0;
         if (position == 0) {
+            try {
+                if (!vt.isShown()) {
+                    vt.setVisibility(View.VISIBLE);
+                    ShowInfText.setVisibility(View.VISIBLE);
+                    ShowInfmapText.setVisibility(View.VISIBLE);
+
+                }
+
+
+            } catch (Exception e) {
+
+
+            }
             NaprFirst = "KomVok";
             NaprTwo = "NULL";
 
         }
         if (position == 1) {
+
+            try {
+                if (!vt.isShown()) {
+                    vt.setVisibility(View.VISIBLE);
+                    ShowInfText.setVisibility(View.VISIBLE);
+                    ShowInfmapText.setVisibility(View.VISIBLE);
+
+                }
+            } catch (Exception e) {
+
+                Log.d("DrawC", "EXeption on case click "+e);
+            }
             NaprFirst = "PrSvVok";
             NaprTwo = "PrSvKom";
 
         }
         if (position == 2) {
+            try {
+                if (!vt.isShown()) {
+                    vt.setVisibility(View.VISIBLE);
+                    ShowInfText.setVisibility(View.VISIBLE);
+                    ShowInfmapText.setVisibility(View.VISIBLE);
+
+                }
+            } catch (Exception e) {
+
+
+            }
             NaprFirst = "ZavVok";
             NaprTwo = "ZavKom";
 
         }
         if (position == 3) {
+
+            try {
+                if (!vt.isShown()) {
+                    vt.setVisibility(View.VISIBLE);
+                    ShowInfText.setVisibility(View.VISIBLE);
+                    ShowInfmapText.setVisibility(View.VISIBLE);
+
+                }
+            } catch (Exception e) {
+
+
+            }
             NaprFirst = "LurgVok";
             NaprTwo = "LurgKom";
 
         }
         if (position == 4) {
+            try {
+                if (!vt.isShown()) {
+                    vt.setVisibility(View.VISIBLE);
+                    ShowInfText.setVisibility(View.VISIBLE);
+                    ShowInfmapText.setVisibility(View.VISIBLE);
+
+                }
+            } catch (Exception e) {
+
+
+            }
             NaprFirst = "MetVok";
             NaprTwo = "MetKom";
 
         }
         if (position == 5) {
+            try {
+                if (!vt.isShown()) {
+                    vt.setVisibility(View.VISIBLE);
+                    ShowInfText.setVisibility(View.VISIBLE);
+                    ShowInfmapText.setVisibility(View.VISIBLE);
+
+                }
+            } catch (Exception e) {
+
+
+            }
             NaprFirst = "NULL";
             NaprTwo = "VokKom";
 
         }
         if (position == 6) {
+
+            try {
+                if (vt.isShown()) {
+                    vt.setVisibility(View.INVISIBLE);
+                    ShowInfText.setVisibility(View.INVISIBLE);
+                    ShowInfmapText.setVisibility(View.INVISIBLE);
+
+                }
+            } catch (Exception e) {
+
+
+            }
             NaprFirst = "RASP";
             NaprTwo = "RASP";
 
+
         }
+
         //Если выходной добавляем Н префикс для поиска направления по вых дню
         if (!WorkedDay()) {
             NaprFirst = "H" + NaprFirst;

@@ -60,16 +60,23 @@ class DrawView extends View  {
         EliLine = 0;
         DisplayMetrics = getInstance();
         dpi = DisplayMetrics.getScreenDpi();
-        if (dpi < 161) {
-            Radius = 27;
-            PaintWidth = 7;
-            PaintWidthElipse = 8;
+        if(dpi <= 120)
+        {
+            Radius = 3;
+            PaintWidth = 2;
+            PaintWidthElipse = 4;
             SizeText=11;
-        } else if (dpi > 160 && dpi < 241) {
+        }
+        else if (dpi > 120&&dpi<160) {
+            Radius = 8;
+            PaintWidth = 4;
+            PaintWidthElipse = 6;
+            SizeText=13;
+        } else if (dpi >= 160 && dpi < 241) {
             Radius = 30;
             PaintWidth = 8;
             PaintWidthElipse = 8;
-            SizeText=22;
+            SizeText=20;
         } else if (dpi > 240 && dpi < 321) {
             Radius = 50;
             PaintWidth = 16;
@@ -156,16 +163,23 @@ class DrawView extends View  {
         EliLine = 0;
         DisplayMetrics = getInstance();
         dpi = DisplayMetrics.getScreenDpi();
-        if (dpi < 161) {
-            Radius = 27;
-            PaintWidth = 7;
-            PaintWidthElipse = 8;
+        if(dpi <= 120)
+        {
+            Radius = 3;
+            PaintWidth = 2;
+            PaintWidthElipse = 4;
             SizeText=11;
-        } else if (dpi > 160 && dpi < 241) {
+        }
+        else if (dpi > 120&&dpi<160) {
+            Radius = 8;
+            PaintWidth = 4;
+            PaintWidthElipse = 6;
+            SizeText=13;
+        } else if (dpi >= 160 && dpi < 241) {
             Radius = 30;
             PaintWidth = 8;
             PaintWidthElipse = 8;
-            SizeText=22;
+            SizeText=20;
         } else if (dpi > 240 && dpi < 321) {
             Radius = 50;
             PaintWidth = 16;
@@ -252,16 +266,23 @@ class DrawView extends View  {
         EliLine = 0;
         DisplayMetrics = getInstance();
         dpi = DisplayMetrics.getScreenDpi();
-        if (dpi < 161) {
-            Radius = 27;
-            PaintWidth = 7;
-            PaintWidthElipse = 8;
+        if(dpi <= 120)
+        {
+            Radius = 3;
+            PaintWidth = 2;
+            PaintWidthElipse = 4;
             SizeText=11;
-        } else if (dpi > 160 && dpi < 241) {
+        }
+        else if (dpi > 120&&dpi<160) {
+            Radius = 8;
+            PaintWidth = 4;
+            PaintWidthElipse = 6;
+            SizeText=13;
+        } else if (dpi >= 160 && dpi < 241) {
             Radius = 30;
             PaintWidth = 8;
             PaintWidthElipse = 8;
-            SizeText=22;
+            SizeText=20;
         } else if (dpi > 240 && dpi < 321) {
             Radius = 50;
             PaintWidth = 16;
@@ -273,7 +294,6 @@ class DrawView extends View  {
             PaintWidthElipse = 16;
             SizeText=70;
         }
-
 
         pathCount = 1;
         //настройка кисти
