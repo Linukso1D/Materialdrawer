@@ -13,7 +13,9 @@ import android.view.View;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.GregorianCalendar;
@@ -27,6 +29,9 @@ import static com.dcodepages.material.MetroNaviF.ScreenMetr.getInstance;
  */
 public class MainActivity extends ActionBarActivity implements DrawerCallbacks {
 
+
+    //TODO 30.10.2015
+    ArrayList OstToVokzal,OstToKomunar;
     public String
             HVokKom,
             VokKom,
@@ -55,7 +60,7 @@ public class MainActivity extends ActionBarActivity implements DrawerCallbacks {
     // хранения расписание в двух масивах
     int ShedTime[] = new int[1700];
     String ShedName[] = new String[1700];
-    int modiX, modiY;
+    public int modiX, modiY,modiX1,modiX2,modiY1,modiY2;
 
     //переменніе вівода в текстовое поле
     int Out1, Out2;
@@ -76,7 +81,7 @@ public class MainActivity extends ActionBarActivity implements DrawerCallbacks {
 
     //Расчет времени
     public int Time_Minus(int a, int b) { // a - b
-        int ha = a / 100, hb = b / 100;
+       int ha = a / 100, hb = b / 100;
         int ma = a % 100, mb = b % 100;
 
         if (mb > ma) { //1305 - 1240 => 1265 - 1240
@@ -88,6 +93,53 @@ public class MainActivity extends ActionBarActivity implements DrawerCallbacks {
         ha -= hb;
 
         return ha * 100 + ma;
+
+
+    }
+    public int Time_Plus(int a,int b)
+    {
+        String newTime="";
+        try {
+        String myTime = ConvertTime(a);
+        SimpleDateFormat df = new SimpleDateFormat("HH:mm");
+        Date d = new Date();
+        d = df.parse(myTime);
+        Calendar cal = Calendar.getInstance();
+        cal.setTime(d);
+        cal.add(Calendar.MINUTE, b);
+        newTime = df.format(cal.getTime());
+        return ConvertOfTime(newTime);
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+        return 0;
+    }
+    //преабразование времении в норм вид
+    public static String ConvertTime(int t)
+    {if(t!=0) {
+        String ret;
+        ret = Integer.toString(t);
+        if(ret.length()>3) {
+            ret = ret.substring(0, 2) + ":" + ret.substring(2, ret.length());
+
+        }
+        else
+        {
+            ret = ret.substring(0, 1) + ":" + ret.substring(1, ret.length());
+
+        }
+        return ret;
+    }
+        return "00:00";
+    }
+
+
+    public static int ConvertOfTime(String str)
+    {
+        String ret;
+        ret = str;
+        ret = ret.substring(0, 2) + ret.substring(3, ret.length());
+        return Integer.parseInt(ret);
     }
 //добавление записи в масивы
 
@@ -1683,7 +1735,8 @@ public class MainActivity extends ActionBarActivity implements DrawerCallbacks {
     }
 
     // возвращает тру если рабочий день недели
-    boolean WorkedDay() {
+   public static boolean WorkedDay() {
+       Calendar newCal = new GregorianCalendar();
         final int day = newCal.get(Calendar.DAY_OF_WEEK);
         if (day == 1 || day == 7) return false;
         else return true;
@@ -1692,7 +1745,7 @@ public class MainActivity extends ActionBarActivity implements DrawerCallbacks {
     //ТУТ НУЖНО ИСКАТЬ
     int Search(int noowtime, String Napr) {
         int res = 0;
-        Log.v("Metr", "Serch");
+        Log.v("Metr", "Serch "+noowtime);
         for (int i = 0; i < 1700; i++) {
             if (ShedName[i].equals(Napr)) {
                 if (ShedTime[i] > noowtime) {
@@ -1707,6 +1760,32 @@ public class MainActivity extends ActionBarActivity implements DrawerCallbacks {
 
         return res;
     }
+    public int TimeToFinish(String str,ArrayList Arr,int nowtime,int a )
+    {
+        int sumtime1=0;
+        boolean flag=false;
+        int res=0;
+        for (Object key:Arr) {
+            if(key.toString().equals(str)||flag)
+            {
+                flag=true;
+                if(sumtime1==0) {
+                    sumtime1 = Search(nowtime, key.toString());
+                }
+                else
+                {
+                    int k;
+                    k= sumtime1;
+
+                    sumtime1 = Search(sumtime1, key.toString());
+
+                    res+=Time_Minus(k, sumtime1);
+                    nowtime=(Time_Plus(nowtime,res));
+                }
+            }
+        }
+       return res+a;
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -1716,21 +1795,76 @@ public class MainActivity extends ActionBarActivity implements DrawerCallbacks {
         int densityDpi = dm.densityDpi;
         int width = dm.widthPixels;
         int height = dm.heightPixels;
-        ScreenMetr metrics = getInstance();
+        final ScreenMetr metrics = getInstance();
         metrics.initDisplay(densityDpi, width, height);
 
         //drawView=new DrawView(MyCont);
 
         setContentView(R.layout.activity_main);
+//add arraylist list ostanovok
+        OstToVokzal=new ArrayList<String>();
+        OstToKomunar= new ArrayList<String>();
+        if(WorkedDay())
+        {
+            //H - hollyday
+            //Vok - Vokzal
+            //Met -Metrostroiteli
+            //Lurg - metalurgovskaya
+            //Zav - zavodskaya
+            //PrSv - ProspektSvobotu
+            //Kom - komunarovskaya
+            OstToVokzal.add("KomVok");
+            OstToVokzal.add("PrSvVok");
+            OstToVokzal.add("ZavVok");
+            OstToVokzal.add("LurgVok");
+            OstToVokzal.add("MetVok");
 
+
+
+            OstToKomunar.add("VokKom");
+            OstToKomunar.add("MetKom");
+            OstToKomunar.add("LurgKom");
+            OstToKomunar.add("ZavKom");
+            OstToKomunar.add("PrSvKom");
+
+
+        }
+        else
+        {
+            OstToVokzal.add("HKomVok");
+            OstToVokzal.add("HPrSvVok");
+            OstToVokzal.add("HZavVok");
+            OstToVokzal.add("HLurgVok");
+            OstToVokzal.add("HMetVok");
+
+
+
+            OstToKomunar.add("HVokKom");
+            OstToKomunar.add("HMetKom");
+            OstToKomunar.add("HLurgKom");
+            OstToKomunar.add("HZavKom");
+            OstToKomunar.add("HPrSvKom");
+
+        }
 
 
         mToolbar = (Toolbar) findViewById(R.id.toolbar_actionbar);
         setSupportActionBar(mToolbar);
         getSupportActionBar().setDisplayShowHomeEnabled(true);
-        NaprFirst = "KomVok";
-        NaprTwo = "NULL";
 
+        //init station
+        if(WorkedDay()) {
+            NaprFirst = "KomVok";
+            NaprTwo = "NULL";
+            metrics.setNapX(NaprFirst);
+            metrics.setNapY(NaprTwo);
+        }else
+        {
+            NaprFirst = "HKomVok";
+            NaprTwo = "NULL";
+            metrics.setNapX(NaprFirst);
+            metrics.setNapY(NaprTwo);
+        }
 
         mToolbar.setOnTouchListener(new View.OnTouchListener() {
             @Override
@@ -1745,7 +1879,7 @@ public class MainActivity extends ActionBarActivity implements DrawerCallbacks {
         mNavigationNavDrawerFragment = (Nav_DrawerFragment) getFragmentManager().findFragmentById(R.id.fragment_drawer);
         mNavigationNavDrawerFragment.setup(R.id.fragment_drawer, (DrawerLayout) findViewById(R.id.drawer), mToolbar);
 
-//логика
+
         ShowInfText = (TextView) findViewById(R.id.Test);
         ShowInfmapText = (TextView) findViewById(R.id.Test2);
         ShowInfText.setTypeface(Typeface.createFromAsset(
@@ -1769,24 +1903,44 @@ public class MainActivity extends ActionBarActivity implements DrawerCallbacks {
                 Thread t = new Thread() {
                     @Override
                     public void run() {
+
                         try {
                             //вывод в ранебл времени
                             Runnable mUpdateUITimerTask = new Runnable() {
                                 public void run() {
                                     // do whatever you want to change here, like:
-                                    if (modiX < parsetime || modiY < parsetime) {
+
+                                        ScreenMetr screen = getInstance();
+                                        NaprFirst   =       screen.getNapX();
+                                        NaprTwo     =       screen.getNapY();
+
+
                                         modiX = Search(parsetime, NaprFirst);
                                         modiY = Search(parsetime, NaprTwo);
 
-                                    }
+                                        modiX1 = Search(modiX, NaprFirst);
+                                        modiY1 = Search(modiY, NaprTwo);
+
+                                        modiX2 = Search(modiX1, NaprFirst);
+                                        modiY2 = Search(modiY1, NaprTwo);
+
+                                        //TimeToFinish(NaprFirst,OstToVokzal,parsetime,0);
+                                        //TimeToFinish(NaprFirst,OstToVokzal,modiX,0);
+                                        //TimeToFinish(NaprFirst,OstToVokzal,modiX1,0);
+
+                                      //  metrics.initModi(ConvertTime( modiX),ConvertTime(modiY),ConvertTime( modiX1),ConvertTime(modiY1),ConvertTime(modiX2),ConvertTime(modiY2));
+
+
                                     if (!NaprFirst.equals("NULL")) {
-                                        ShowInfmapText.setText(Integer.toString(Time_Minus(modiX, parsetime)) + " \nВокзал ");
+                                        //Расчитывает время прибытия не точно
+                                     //   ShowInfmapText.setText(  "На вокзал: \n "+TimeToFinish(NaprFirst, OstToVokzal, parsetime, 0)+" мин.\n слейдуйщие:\n"+TimeToFinish(NaprFirst,OstToVokzal,modiX1,0)+" мин.\n"+TimeToFinish(NaprFirst,OstToVokzal,modiX2,0)+" мин.\n");
+                                       ShowInfmapText.setText(  "На вокзал:\n через "+Integer.toString(Time_Minus(modiX, parsetime))+" мин.\n следующие:\n"+ConvertTime(modiX1)+" мин.\n"+ConvertTime(modiX2)+" мин.\n");
                                     } else {
                                         ShowInfmapText.setText("Конечная\nВокзал ");
                                     }
 
                                     if (!NaprTwo.equals("NULL")) {
-                                        ShowInfText.setText(Integer.toString(Time_Minus(modiY, parsetime)) + " \nКоммунар ");
+                                        ShowInfText.setText(  "На коммунар:\n через "+Integer.toString(Time_Minus(modiY, parsetime))+" мин.\n следующие:\n"+ConvertTime(modiY1)+" мин.\n"+ConvertTime(modiY2)+" мин.\n");
                                     } else {
                                         ShowInfText.setText("Конечная\nКоммунар ");
                                     }
@@ -1818,7 +1972,7 @@ public class MainActivity extends ActionBarActivity implements DrawerCallbacks {
                 t.start();
             }
 
-            ;
+
         }, 0, 1000);
 
 
@@ -1841,42 +1995,51 @@ public class MainActivity extends ActionBarActivity implements DrawerCallbacks {
         //Zav - zavodskaya
         //PrSv - ProspektSvobotu
         //Kom - komunarovskaya
-
-        modiX = 0;
-        modiY = 0;
+ScreenMetr screen = getInstance();
+        modiX =modiX1=modiX2= 0;
+        modiY =modiY1=modiY2= 0;
         if (position == 0) {
             NaprFirst = "KomVok";
             NaprTwo = "NULL";
+
         }
         if (position == 1) {
             NaprFirst = "PrSvVok";
             NaprTwo = "PrSvKom";
+
         }
         if (position == 2) {
             NaprFirst = "ZavVok";
             NaprTwo = "ZavKom";
+
         }
         if (position == 3) {
             NaprFirst = "LurgVok";
             NaprTwo = "LurgKom";
+
         }
         if (position == 4) {
             NaprFirst = "MetVok";
             NaprTwo = "MetKom";
+
         }
         if (position == 5) {
             NaprFirst = "NULL";
             NaprTwo = "VokKom";
+
         }
         if (position == 6) {
             NaprFirst = "RASP";
             NaprTwo = "RASP";
+
         }
         //Если выходной добавляем Н префикс для поиска направления по вых дню
         if (!WorkedDay()) {
             NaprFirst = "H" + NaprFirst;
             NaprTwo = "H" + NaprTwo;
         }
+        screen.setNapX(NaprFirst);
+        screen.setNapY(NaprTwo);
 
         //при клике на пункт меню
         Toast.makeText(this, "item no: " + position + " 1 " + NaprFirst + " 2 " + NaprTwo, Toast.LENGTH_SHORT).show();
@@ -1890,4 +2053,6 @@ public class MainActivity extends ActionBarActivity implements DrawerCallbacks {
         else
             super.onBackPressed();
     }
+
+
 }

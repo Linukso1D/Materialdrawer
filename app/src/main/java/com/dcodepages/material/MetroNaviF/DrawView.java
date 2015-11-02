@@ -23,6 +23,7 @@ import static android.graphics.Color.HSVToColor;
 import static android.graphics.Color.parseColor;
 import static com.dcodepages.material.MetroNaviF.ElipseType.diStartDrawX;
 import static com.dcodepages.material.MetroNaviF.ElipseType.diStartDrawY;
+import static com.dcodepages.material.MetroNaviF.MainActivity.WorkedDay;
 import static com.dcodepages.material.MetroNaviF.ScreenMetr.getBlue;
 import static com.dcodepages.material.MetroNaviF.ScreenMetr.getBlueline;
 import static com.dcodepages.material.MetroNaviF.ScreenMetr.getBrown;
@@ -48,7 +49,7 @@ class DrawView extends View  {
     private ArrayList<Path> mListPath = new ArrayList<Path>(this.pathCount);
     private ElipseType El1, El2, El3, El4, El5, El6;
     private Thread t;
-    private int EliLine, ElineLast;
+    public int EliLine, ElineLast;
     private  boolean  StatusTread;
 
     public DrawView(Context context) {
@@ -60,25 +61,25 @@ class DrawView extends View  {
         DisplayMetrics = getInstance();
         dpi = DisplayMetrics.getScreenDpi();
         if (dpi < 161) {
-            Radius = 30;
-            PaintWidth = 10;
+            Radius = 27;
+            PaintWidth = 7;
             PaintWidthElipse = 8;
-            SizeText=20;
+            SizeText=11;
         } else if (dpi > 160 && dpi < 241) {
             Radius = 30;
-            PaintWidth = 13;
+            PaintWidth = 8;
             PaintWidthElipse = 8;
-            SizeText=40;
+            SizeText=22;
         } else if (dpi > 240 && dpi < 321) {
             Radius = 50;
             PaintWidth = 16;
             PaintWidthElipse = 14;
-            SizeText=50;
+            SizeText=35;
         } else if (dpi > 320) {
             Radius = 80;
             PaintWidth = 20;
             PaintWidthElipse = 16;
-            SizeText=90;
+            SizeText=70;
         }
 
 
@@ -156,25 +157,25 @@ class DrawView extends View  {
         DisplayMetrics = getInstance();
         dpi = DisplayMetrics.getScreenDpi();
         if (dpi < 161) {
-            Radius = 30;
-            PaintWidth = 10;
+            Radius = 27;
+            PaintWidth = 7;
             PaintWidthElipse = 8;
-            SizeText=20;
+            SizeText=11;
         } else if (dpi > 160 && dpi < 241) {
             Radius = 30;
-            PaintWidth = 13;
+            PaintWidth = 8;
             PaintWidthElipse = 8;
-            SizeText=40;
+            SizeText=22;
         } else if (dpi > 240 && dpi < 321) {
             Radius = 50;
             PaintWidth = 16;
             PaintWidthElipse = 14;
-            SizeText=50;
+            SizeText=35;
         } else if (dpi > 320) {
             Radius = 80;
             PaintWidth = 20;
             PaintWidthElipse = 16;
-            SizeText=90;
+            SizeText=70;
         }
 
 
@@ -252,25 +253,25 @@ class DrawView extends View  {
         DisplayMetrics = getInstance();
         dpi = DisplayMetrics.getScreenDpi();
         if (dpi < 161) {
-            Radius = 30;
-            PaintWidth = 10;
+            Radius = 27;
+            PaintWidth = 7;
             PaintWidthElipse = 8;
-            SizeText=20;
+            SizeText=11;
         } else if (dpi > 160 && dpi < 241) {
             Radius = 30;
-            PaintWidth = 13;
+            PaintWidth = 8;
             PaintWidthElipse = 8;
-            SizeText=40;
+            SizeText=22;
         } else if (dpi > 240 && dpi < 321) {
             Radius = 50;
             PaintWidth = 16;
             PaintWidthElipse = 14;
-            SizeText=50;
+            SizeText=35;
         } else if (dpi > 320) {
             Radius = 80;
             PaintWidth = 20;
             PaintWidthElipse = 16;
-            SizeText=90;
+            SizeText=70;
         }
 
 
@@ -576,27 +577,28 @@ class DrawView extends View  {
                     switch (EliLine) {
                         case 1:
                             Text.setTextAlign(Paint.Align.LEFT);
-                            canvas.drawText("text", (float) El1.getLineCx(), (float) El1.getLineCy()-PaintWidth, Text);
+                            canvas.drawText(GetModixAllX(1), (float) El1.getLineCx(), (float) El1.getLineCy() - PaintWidth, Text);
                             break;
                         case 2:
                             Text.setTextAlign(Paint.Align.LEFT);
-                            canvas.drawText("text", (float) El2.getLineCx(), (float) El2.getLineCy()-PaintWidth, Text);
+                            canvas.drawText(GetModixAllX(2), (float) El2.getLineCx(), (float) El2.getLineCy() - PaintWidth, Text);
                             break;
                         case 3:
                             Text.setTextAlign(Paint.Align.LEFT);
-                            canvas.drawText("text", (float) El3.getLineCx(), (float) El3.getLineCy()-PaintWidth, Text);
+                            canvas.drawText(GetModixAllX(3), (float) El3.getLineCx(), (float) El3.getLineCy() - PaintWidth, Text);
                             break;
                         case 4:
                             Text.setTextAlign(Paint.Align.RIGHT);
-                            canvas.drawText("text", (float) El4.getLineCx(), (float) El4.getLineCy()-PaintWidth, Text);
+                            canvas.drawText(GetModixAllX(4), (float) El4.getLineCx(), (float) El4.getLineCy() - PaintWidth, Text);
                             break;
                         case 5:
                             Text.setTextAlign(Paint.Align.RIGHT);
-                            canvas.drawText("text", (float) El5.getLineCx(), (float) El5.getLineCy()-PaintWidth, Text);
+                            canvas.drawText(GetModixAllX(5), (float) El5.getLineCx(), (float) El5.getLineCy() - PaintWidth, Text);
                             break;
                         case 6:
                             Text.setTextAlign(Paint.Align.RIGHT);
-                            canvas.drawText("text", (float) El6.getLineCx(), (float) El6.getLineCy()-PaintWidth, Text);
+                            canvas.drawText(GetModixAllX(6), (float) El6.getLineCx(), (float) El6.getLineCy() - PaintWidth , Text);
+
                             break;
                         default:
                             break;
@@ -960,5 +962,53 @@ class DrawView extends View  {
 
         return true;
     }
+
+    public static String GetModixAllX(int chose)
+    {
+        String str;
+        ScreenMetr screen = getInstance();
+
+
+
+        switch (chose) {
+            case 1: str="Вокзальная" ;
+                screen.setNapX("NULL");
+                screen.setNapY("VokKom");
+
+                break;
+            case 2: str="Метростроителей" ;
+                screen.setNapX("MetVok");
+                screen.setNapY("MetKom");
+
+                break;
+            case 3: str="Металурговская" ;
+                screen.setNapX("LurgVok");
+                screen.setNapY("LurgKom");
+                break;
+            case 4: str="Заводская" ;
+                screen.setNapX("ZavVok");
+                screen.setNapY("ZavKom");
+                break;
+            case 5: str="Проспект-свободы" ;
+                screen.setNapX("PrSvVok");
+                screen.setNapY("PrSvKom");
+                break;
+            case 6: str="Коммунаровская" ;
+                screen.setNapX("KomVok");
+                screen.setNapY("NULL");
+                break;
+
+            default:str = "none case" ;break;
+
+        }
+        if (!WorkedDay()) {
+            screen.setNapX("H"+screen.getNapX());
+            screen.setNapY("H"+screen.getNapY());
+        }
+
+        return str;
+
+    }
+
 }
 

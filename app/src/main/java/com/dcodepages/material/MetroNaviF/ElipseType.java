@@ -64,13 +64,13 @@ public class ElipseType extends ElipseAbstract {
         lineBy= y + (R+R/3) * cos((Dirka -15- h) * 3.1415 / 180);
         ScreenMetr sc=ScreenMetr.getInstance();
 if(Dirka>=180) {
-    lineCx = lineBx - (sc.getConvasWeight() / 100 * 80 / 2);
+    lineCx = lineBx - (sc.getConvasWeight() / 100 * 90 / 2);
     lineCy = lineBy ;
 
 }
 else
 {
-    lineCx = lineBx + (sc.getConvasWeight() / 100 * 80 / 2);
+    lineCx = lineBx + (sc.getConvasWeight() / 100 * 90 / 2);
     lineCy = lineBy;
 }
         return MyArray;

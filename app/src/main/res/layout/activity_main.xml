@@ -31,22 +31,24 @@
                 android:id="@+id/Test"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_gravity="bottom|center_vertical"
+                android:layout_gravity="left|bottom|center_vertical"
                 android:text="Material Drawer"
-                android:textSize="24dp"
-                android:layout_marginLeft="20dp"
-                android:layout_marginBottom="40dp"
-                android:textColor="@color/material_blue_grey_800" />
+                android:textSize="20dp"
+                android:layout_marginLeft="10dp"
+                android:layout_marginBottom="20dp"
+                android:textColor="@color/material_blue_grey_800"
+                android:gravity="left" />
             <TextView
                 android:id="@+id/Test2"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="top|center|right"
                 android:text="Material Drawer"
-                android:textSize="24dp"
+                android:textSize="20dp"
                 android:layout_marginTop="20dp"
-                android:layout_marginRight="20dp"
-                android:textColor="@color/material_blue_grey_800" />
+                android:layout_marginRight="10dp"
+                android:textColor="@color/material_blue_grey_800"
+                android:gravity="right" />
   </FrameLayout>
    <fragment
             android:id="@+id/fragment_drawer"
