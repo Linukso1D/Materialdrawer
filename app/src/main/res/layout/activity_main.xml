@@ -57,6 +57,13 @@
                 android:textColor="@color/material_blue_grey_800"
                 android:gravity="right" />
 
+            <ListView
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:id="@+id/listView"
+                android:layout_gravity="center"
+                android:paddingTop="180dp" />
+
             <fr.ganfra.materialspinner.MaterialSpinner
                 android:id="@+id/spinner1"
                 android:layout_width="fill_parent"
@@ -78,6 +85,17 @@
                 app:ms_arrowColor="#d0e5030b"
                 android:layout_gravity="top|left|bottom"
                 android:layout_marginTop="60dp" />
+
+            <CheckBox
+                android:text="Будний день"
+                android:id="@+id/switch1"
+                android:layout_gravity="left|top"
+                android:layout_marginTop="130dp"
+                android:layout_marginLeft="20dp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:enabled="true"
+                android:checked="true" />
 
 
         </FrameLayout>

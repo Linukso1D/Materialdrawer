@@ -12,7 +12,11 @@ import android.view.MotionEvent;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.CheckBox;
+import android.widget.ListAdapter;
+import android.widget.ListView;
 import android.widget.Spinner;
+import android.widget.Switch;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -24,6 +28,7 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.GregorianCalendar;
+import java.util.List;
 import java.util.Timer;
 import java.util.TimerTask;
 
@@ -60,9 +65,10 @@ private MaterialSpinner spinner1,spinner2;
             KomVok;
     public String NaprFirst, NaprTwo;
     public int modiX, modiY, modiX1, modiX2, modiY1, modiY2;
-
+    ListView lvMain;
     TextView ShowInfText;
     TextView ShowInfmapText;
+    CheckBox FirstSwitch;
     // хранения расписание в двух масивах
     int ShedTime[] = new int[1700];
     String ShedName[] = new String[1700];
@@ -82,6 +88,11 @@ private MaterialSpinner spinner1,spinner2;
     private Toolbar mToolbar;
     private Nav_DrawerFragment mNavigationNavDrawerFragment;
     private int SizeText;
+
+    private List <String> Raspto = new ArrayList<String>();
+    String keyFirst,keyTwo;
+
+
     //TODO 30.10.2015
     ArrayList OstToVokzal, OstToKomunar;
 
@@ -1824,12 +1835,41 @@ private MaterialSpinner spinner1,spinner2;
         spinner2 = (MaterialSpinner) findViewById(R.id.spinner2);
         spinner2.setAdapter(toAdapter);
 
-
+        FirstSwitch=(CheckBox)findViewById(R.id.switch1);
+        lvMain = (ListView) findViewById(R.id.listView);
         spinner1.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
                 @Override
                 public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
 
-                    Toast.makeText(getApplication(), "Item select " + position, Toast.LENGTH_SHORT);
+                    String names[]={"Здесь будет рассписание","item2","item2","item3","item4","item5","item6","item7","item8","item2","Здесь будет рассписание","item2","item2","item3","item4","item5","item6","item7","item8","item2","item2","item2"};
+
+                    keyFirst="";
+                    if(!FirstSwitch.isChecked())
+                    {
+                        keyFirst="H";
+                    }
+                    // создаем адаптер
+
+                    switch(position)
+                    {
+                        //H - hollyday
+                        //Vok - Vokzal
+                        //Met -Metrostroiteli
+                        //Lurg - metalurgovskaya
+                        //Zav - zavodskaya
+                        //PrSv - ProspektSvobotu
+                        //Kom - komunarovskaya
+
+                        case 0: keyFirst+="Vok"; break;
+                        case 1: keyFirst+="Met"; break;
+                        case 2: keyFirst+="Lurg"; break;
+                        case 3: keyFirst+="Zav"; break;
+                        case 4: keyFirst+="PrSv"; break;
+                        case 5: keyFirst+="Kom"; break;
+
+                    }
+
+
                 }
 
                 @Override
@@ -1838,17 +1878,71 @@ private MaterialSpinner spinner1,spinner2;
                 }
             });
         spinner2.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-            @Override
-            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                                               @Override
+                                               public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
 
-                Toast.makeText(getApplication(),"Item select "+position,Toast.LENGTH_SHORT);
-            }
+                                                   switch (position) {
+                                                       //H - hollyday
+                                                       //Vok - Vokzal
+                                                       //Met -Metrostroiteli
+                                                       //Lurg - metalurgovskaya
+                                                       //Zav - zavodskaya
+                                                       //PrSv - ProspektSvobotu
+                                                       //Kom - komunarovskaya
 
-            @Override
-            public void onNothingSelected(AdapterView<?> parent) {
+                                                       case 0:
+                                                           keyTwo = "Vok";
+                                                           break;
+                                                       case 1:
+                                                           keyTwo= "Kom";
+                                                           break;
 
-            }
-        });
+
+                                                   }
+                                                   if (position!=-1) {
+
+                                                       for (int i = 0; i < 1700; i++) {
+                                                           if ((keyFirst.concat(keyTwo)).equals(ShedName[i])) {
+                                                               Raspto.add(ConvertTime(ShedTime[i]));
+
+                                                           }
+
+
+                                                           ListAdapter listadapter = new ArrayAdapter<String>(view.getContext(), R.layout.listbody, R.id.list_content, Raspto);
+
+                                                           lvMain.setAdapter(listadapter);
+
+                                                       }
+
+
+                                                   }
+
+
+                                               }
+
+                                               @Override
+                                               public void onNothingSelected(AdapterView<?> parent) {
+
+                                               }
+                                           }
+            );
+
+
+
+
+
+        spinner1.setVisibility(View.INVISIBLE);
+        spinner2.setVisibility(View.INVISIBLE);
+        lvMain.setVisibility(View.INVISIBLE);
+        FirstSwitch.setVisibility(View.INVISIBLE);
+
+
+
+
+
+
+
+
 
 
 
@@ -2051,6 +2145,8 @@ private MaterialSpinner spinner1,spinner2;
                     ShowInfmapText.setVisibility(View.VISIBLE);
                     spinner1.setVisibility(View.INVISIBLE);
                     spinner2.setVisibility(View.INVISIBLE);
+                    lvMain.setVisibility(View.INVISIBLE);
+                    FirstSwitch.setVisibility(View.INVISIBLE);
                 }
 
 
@@ -2071,6 +2167,8 @@ private MaterialSpinner spinner1,spinner2;
                     ShowInfmapText.setVisibility(View.VISIBLE);
                     spinner1.setVisibility(View.INVISIBLE);
                     spinner2.setVisibility(View.INVISIBLE);
+                    lvMain.setVisibility(View.INVISIBLE);
+                    FirstSwitch.setVisibility(View.INVISIBLE);
                 }
             } catch (Exception e) {
 
@@ -2088,6 +2186,8 @@ private MaterialSpinner spinner1,spinner2;
                     ShowInfmapText.setVisibility(View.VISIBLE);
                     spinner1.setVisibility(View.INVISIBLE);
                     spinner2.setVisibility(View.INVISIBLE);
+                    lvMain.setVisibility(View.INVISIBLE);
+                    FirstSwitch.setVisibility(View.INVISIBLE);
                 }
             } catch (Exception e) {
 
@@ -2106,6 +2206,8 @@ private MaterialSpinner spinner1,spinner2;
                     ShowInfmapText.setVisibility(View.VISIBLE);
                     spinner1.setVisibility(View.INVISIBLE);
                     spinner2.setVisibility(View.INVISIBLE);
+                    lvMain.setVisibility(View.INVISIBLE);
+                    FirstSwitch.setVisibility(View.INVISIBLE);
                 }
             } catch (Exception e) {
 
@@ -2123,6 +2225,8 @@ private MaterialSpinner spinner1,spinner2;
                     ShowInfmapText.setVisibility(View.VISIBLE);
                     spinner1.setVisibility(View.INVISIBLE);
                     spinner2.setVisibility(View.INVISIBLE);
+                    lvMain.setVisibility(View.INVISIBLE);
+                    FirstSwitch.setVisibility(View.INVISIBLE);
                 }
             } catch (Exception e) {
 
@@ -2140,6 +2244,8 @@ private MaterialSpinner spinner1,spinner2;
                     ShowInfmapText.setVisibility(View.VISIBLE);
                     spinner1.setVisibility(View.INVISIBLE);
                     spinner2.setVisibility(View.INVISIBLE);
+                    lvMain.setVisibility(View.INVISIBLE);
+                    FirstSwitch.setVisibility(View.INVISIBLE);
                 }
             } catch (Exception e) {
 
@@ -2158,6 +2264,8 @@ private MaterialSpinner spinner1,spinner2;
                     ShowInfmapText.setVisibility(View.INVISIBLE);
                     spinner1.setVisibility(View.VISIBLE);
                     spinner2.setVisibility(View.VISIBLE);
+                    lvMain.setVisibility(View.VISIBLE);
+                    FirstSwitch.setVisibility(View.VISIBLE);
                 }
             } catch (Exception e) {
 
