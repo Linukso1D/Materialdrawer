@@ -1009,7 +1009,7 @@ class DrawView extends View  {
                 screen.setNapX("ZavVok");
                 screen.setNapY("ZavKom");
                 break;
-            case 5: str="Проспект-свободы" ;
+            case 5: str="Пр.свободы" ;
                 screen.setNapX("PrSvVok");
                 screen.setNapY("PrSvKom");
                 break;
