@@ -24,6 +24,8 @@
             android:background="@android:color/white"> >
 
 
+
+
             <com.dcodepages.material.MetroNaviF.DrawView
                 android:id="@+id/DrawV"
                 android:layout_width="wrap_content"
@@ -55,6 +57,27 @@
                 android:textColor="@color/material_blue_grey_800"
                 android:gravity="right" />
 
+            <fr.ganfra.materialspinner.MaterialSpinner
+                android:id="@+id/spinner1"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:gravity="left|top"
+                android:layout_marginLeft="10dp"
+                android:layout_marginRight="10dp"
+                app:ms_hint="Станция"
+                app:ms_arrowColor="#039BE5"
+                />
+            <fr.ganfra.materialspinner.MaterialSpinner
+                android:id="@+id/spinner2"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:gravity="left|top"
+                android:layout_marginLeft="10dp"
+                android:layout_marginRight="10dp"
+                app:ms_hint="Направление"
+                app:ms_arrowColor="#d0e5030b"
+                android:layout_gravity="top|left|bottom"
+                android:layout_marginTop="60dp" />
 
 
         </FrameLayout>

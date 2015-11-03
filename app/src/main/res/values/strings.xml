@@ -12,4 +12,8 @@
         <item>Проспект-свободы</item>
         <item>Коммунаровская</item>
     </string-array>
+    <string-array name="to">
+        <item>Вокзал</item>
+        <item>Коммунар</item>
+    </string-array>
 </resources>

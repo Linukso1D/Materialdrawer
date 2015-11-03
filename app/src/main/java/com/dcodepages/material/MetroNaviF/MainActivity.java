@@ -10,10 +10,13 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MotionEvent;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
+
+
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -24,6 +27,9 @@ import java.util.GregorianCalendar;
 import java.util.Timer;
 import java.util.TimerTask;
 
+
+import fr.ganfra.materialspinner.MaterialSpinner;
+
 import static com.dcodepages.material.MetroNaviF.ScreenMetr.getInstance;
 
 /**
@@ -31,7 +37,7 @@ import static com.dcodepages.material.MetroNaviF.ScreenMetr.getInstance;
  */
 public class MainActivity extends ActionBarActivity implements DrawerCallbacks {
 
-
+private MaterialSpinner spinner1,spinner2;
     public String
             HVokKom,
             VokKom,
@@ -1794,9 +1800,55 @@ public class MainActivity extends ActionBarActivity implements DrawerCallbacks {
 
         //drawView=new DrawView(MyCont);
 
+
+
+
         setContentView(R.layout.activity_main);
+
+
+
+
         ShowInfText = (TextView) findViewById(R.id.Test);
         ShowInfmapText = (TextView) findViewById(R.id.Test2);
+
+        String[] list = getResources().getStringArray(R.array.station);
+        String[] to = getResources().getStringArray(R.array.to);
+
+        ArrayAdapter<String> adapter = new ArrayAdapter<String>(this, R.layout.spinnerstyle, list);
+        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        spinner1 = (MaterialSpinner) findViewById(R.id.spinner1);
+        spinner1.setAdapter(adapter);
+
+        ArrayAdapter<String> toAdapter = new ArrayAdapter<String>(this, R.layout.spinnertwo, to);
+        toAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        spinner2 = (MaterialSpinner) findViewById(R.id.spinner2);
+        spinner2.setAdapter(toAdapter);
+
+
+        spinner1.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+                @Override
+                public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+
+                    Toast.makeText(getApplication(), "Item select " + position, Toast.LENGTH_SHORT);
+                }
+
+                @Override
+                public void onNothingSelected(AdapterView<?> parent) {
+
+                }
+            });
+        spinner2.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+
+                Toast.makeText(getApplication(),"Item select "+position,Toast.LENGTH_SHORT);
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+
+            }
+        });
 
 
 
@@ -1997,7 +2049,8 @@ public class MainActivity extends ActionBarActivity implements DrawerCallbacks {
                     vt.setVisibility(View.VISIBLE);
                     ShowInfText.setVisibility(View.VISIBLE);
                     ShowInfmapText.setVisibility(View.VISIBLE);
-
+                    spinner1.setVisibility(View.INVISIBLE);
+                    spinner2.setVisibility(View.INVISIBLE);
                 }
 
 
@@ -2016,7 +2069,8 @@ public class MainActivity extends ActionBarActivity implements DrawerCallbacks {
                     vt.setVisibility(View.VISIBLE);
                     ShowInfText.setVisibility(View.VISIBLE);
                     ShowInfmapText.setVisibility(View.VISIBLE);
-
+                    spinner1.setVisibility(View.INVISIBLE);
+                    spinner2.setVisibility(View.INVISIBLE);
                 }
             } catch (Exception e) {
 
@@ -2032,7 +2086,8 @@ public class MainActivity extends ActionBarActivity implements DrawerCallbacks {
                     vt.setVisibility(View.VISIBLE);
                     ShowInfText.setVisibility(View.VISIBLE);
                     ShowInfmapText.setVisibility(View.VISIBLE);
-
+                    spinner1.setVisibility(View.INVISIBLE);
+                    spinner2.setVisibility(View.INVISIBLE);
                 }
             } catch (Exception e) {
 
@@ -2049,7 +2104,8 @@ public class MainActivity extends ActionBarActivity implements DrawerCallbacks {
                     vt.setVisibility(View.VISIBLE);
                     ShowInfText.setVisibility(View.VISIBLE);
                     ShowInfmapText.setVisibility(View.VISIBLE);
-
+                    spinner1.setVisibility(View.INVISIBLE);
+                    spinner2.setVisibility(View.INVISIBLE);
                 }
             } catch (Exception e) {
 
@@ -2065,7 +2121,8 @@ public class MainActivity extends ActionBarActivity implements DrawerCallbacks {
                     vt.setVisibility(View.VISIBLE);
                     ShowInfText.setVisibility(View.VISIBLE);
                     ShowInfmapText.setVisibility(View.VISIBLE);
-
+                    spinner1.setVisibility(View.INVISIBLE);
+                    spinner2.setVisibility(View.INVISIBLE);
                 }
             } catch (Exception e) {
 
@@ -2081,7 +2138,8 @@ public class MainActivity extends ActionBarActivity implements DrawerCallbacks {
                     vt.setVisibility(View.VISIBLE);
                     ShowInfText.setVisibility(View.VISIBLE);
                     ShowInfmapText.setVisibility(View.VISIBLE);
-
+                    spinner1.setVisibility(View.INVISIBLE);
+                    spinner2.setVisibility(View.INVISIBLE);
                 }
             } catch (Exception e) {
 
@@ -2098,7 +2156,8 @@ public class MainActivity extends ActionBarActivity implements DrawerCallbacks {
                     vt.setVisibility(View.INVISIBLE);
                     ShowInfText.setVisibility(View.INVISIBLE);
                     ShowInfmapText.setVisibility(View.INVISIBLE);
-
+                    spinner1.setVisibility(View.VISIBLE);
+                    spinner2.setVisibility(View.VISIBLE);
                 }
             } catch (Exception e) {
 
