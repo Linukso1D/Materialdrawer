@@ -13,6 +13,7 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.CheckBox;
+import android.widget.CompoundButton;
 import android.widget.ListAdapter;
 import android.widget.ListView;
 import android.widget.Spinner;
@@ -1868,8 +1869,26 @@ private MaterialSpinner spinner1,spinner2;
                         case 5: keyFirst+="Kom"; break;
 
                     }
+try {
+    if (position != -1) {
+        Raspto = new ArrayList<String>();
+        for (int i = 0; i < 1700; i++) {
+            if ((keyFirst.concat(keyTwo)).equals(ShedName[i])) {
+                Raspto.add(ConvertTime(ShedTime[i]));
+
+            }
 
 
+            ListAdapter listadapter = new ArrayAdapter<String>(view.getContext(), R.layout.listbody, R.id.list_content, Raspto);
+
+            lvMain.setAdapter(listadapter);
+
+        }
+
+
+    }
+}catch (Exception e)
+{}
                 }
 
                 @Override
@@ -1899,8 +1918,9 @@ private MaterialSpinner spinner1,spinner2;
 
 
                                                    }
+                                                   try{
                                                    if (position!=-1) {
-
+                                                       Raspto= new ArrayList<String>();
                                                        for (int i = 0; i < 1700; i++) {
                                                            if ((keyFirst.concat(keyTwo)).equals(ShedName[i])) {
                                                                Raspto.add(ConvertTime(ShedTime[i]));
@@ -1916,9 +1936,15 @@ private MaterialSpinner spinner1,spinner2;
 
 
                                                    }
+                                                   }
+                                              catch (Exception e){}
 
 
-                                               }
+
+
+
+
+                                           }
 
                                                @Override
                                                public void onNothingSelected(AdapterView<?> parent) {
@@ -1929,7 +1955,35 @@ private MaterialSpinner spinner1,spinner2;
 
 
 
+        FirstSwitch.setOnClickListener(new View.OnClickListener() {
+                                           @Override
+                                           public void onClick(View v) {
+String mKeyfirst="";
+                                               if (!FirstSwitch.isChecked() && !keyFirst.substring(0, 1).equals("H")) {
+                                                   mKeyfirst = "H" + keyFirst;
+                                               }
+                                               else
+                                               {
+                                                   mKeyfirst=keyFirst;
+                                               }
+                                               Raspto = new ArrayList<String>();
+                                               for (int i = 0; i < 1700; i++) {
+                                                   if ((mKeyfirst.concat(keyTwo)).equals(ShedName[i])) {
+                                                       Raspto.add(ConvertTime(ShedTime[i]));
 
+                                                   }
+
+
+                                                   ListAdapter listadapter = new ArrayAdapter<String>(v.getContext(), R.layout.listbody, R.id.list_content, Raspto);
+
+                                                   lvMain.setAdapter(listadapter);
+
+                                               }
+
+
+                                           }
+                                       }
+        );
 
         spinner1.setVisibility(View.INVISIBLE);
         spinner2.setVisibility(View.INVISIBLE);
